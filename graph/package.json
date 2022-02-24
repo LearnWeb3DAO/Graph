@@ -1,0 +1,16 @@
+{
+  "name": "Learnweb3",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ Sneh1999/Learnweb3",
+    "create-local": "graph create --node http://localhost:8020/ Sneh1999/Learnweb3",
+    "remove-local": "graph remove --node http://localhost:8020/ Sneh1999/Learnweb3",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Sneh1999/Learnweb3"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.26.0",
+    "@graphprotocol/graph-ts": "0.24.1"
+  }
+}
