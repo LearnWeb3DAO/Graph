@@ -30,6 +30,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "gameId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "winner",
         "type": "address"
@@ -47,6 +53,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gameId",
+        "type": "uint256"
+      },
       {
         "indexed": false,
         "internalType": "uint8",
@@ -83,6 +95,25 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gameId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "player",
+        "type": "address"
+      }
+    ],
+    "name": "PlayerJoined",
+    "type": "event"
+  },
+  {
     "stateMutability": "payable",
     "type": "fallback"
   },
@@ -94,6 +125,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gameStarted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

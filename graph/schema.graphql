@@ -4,5 +4,5 @@ type Game @entity {
   entryFee: BigInt!
   winner: Bytes
   requestId: Bytes
-  players: [Bytes!]
+  players: [Bytes!]!
 }

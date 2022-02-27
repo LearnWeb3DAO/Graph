@@ -1,4 +1,4 @@
-import { BigNumber, Contract, providers, utils } from "ethers";
+import { BigNumber, Contract, ethers, providers, utils } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
@@ -15,6 +15,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   // boolean to keep track of whether the current connected account is owner or not
   const [isOwner, setIsOwner] = useState(false);
+  // Game id is the unique identifier for a game
+  const [gameId, setGameID] = useState(0);
   // entryFee is the ether required to enter a game
   const [entryFee, setEntryFee] = useState(zero);
   // maxPlayers is the max number of players that can play the game
@@ -25,6 +27,10 @@ export default function Home() {
   const [logs, setLogs] = useState([]);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
   const web3ModalRef = useRef();
+
+  // This is used to force react to re render the page when we want to
+  // in our case we will use force update to show new logs
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
 
   /*
     connectWallet: Connects the MetaMask wallet
@@ -80,8 +86,8 @@ export default function Home() {
       // Get the signer from web3Modal, which in our case is MetaMask
       // No need for the Signer here, as we are only reading state from the blockchain
       const signer = await getProviderOrSigner(true);
-      // We connect to the Contract using a Provider, so we will only
-      // have read-only access to the Contract
+      // We connect to the Contract using a signer because we want the owner to
+      // sign the transaction
       const randomGameNFTContract = new Contract(
         RANDOM_GAME_NFT_CONTRACT_ADDRESS,
         abi,
@@ -90,9 +96,35 @@ export default function Home() {
       setLoading(true);
       // call the startGame function from the contract
       await randomGameNFTContract.startGame(maxPlayers, entryFee);
-      setLoading(false);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const joinGame = async () => {
+    try {
+      // Get the signer from web3Modal, which in our case is MetaMask
+      // No need for the Signer here, as we are only reading state from the blockchain
+      const signer = await getProviderOrSigner(true);
+      // We connect to the Contract using a signer because we want the owner to
+      // sign the transaction
+      const randomGameNFTContract = new Contract(
+        RANDOM_GAME_NFT_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      setLoading(true);
+      // call the startGame function from the contract
+      await randomGameNFTContract.joinGame({
+        value: BigNumber.from(entryFee),
+      });
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,7 +134,6 @@ export default function Home() {
    */
   const checkIfGameStarted = async () => {
     try {
-      console.log("I came here");
       // Get the provider from web3Modal, which in our case is MetaMask
       // No need for the Signer here, as we are only reading state from the blockchain
       const provider = await getProviderOrSigner();
@@ -115,21 +146,25 @@ export default function Home() {
       );
       // call the owner function from the contract
       const _gameStarted = await randomGameNFTContract.gameStarted();
-      console.log(typeof _gameStarted);
       setGameStarted(_gameStarted);
       // Initialize the logs array and query the graph for current gameID
       if (_gameStarted) {
-        console.log("I was here");
-        const _gameArray = await subgraphQuery(FETCH_CREATED_GAME);
+        const _gameArray = await subgraphQuery(FETCH_CREATED_GAME());
         const _game = _gameArray.games[0];
         const _logs = [`Game has started with ID: ${_game.id}`];
-        console.log(_logs);
+        setEntryFee(_game.entryFee);
+        setMaxPlayers(_game.maxPlayers);
+        setGameID(_game.id);
         setLogs(_logs);
+        forceUpdate();
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
   /**
    * getOwner: calls the contract to retrieve the owner
    */
@@ -174,6 +209,7 @@ export default function Home() {
       });
       connectWallet();
       getOwner();
+      checkIfGameStarted();
       setInterval(() => {
         checkIfGameStarted();
       }, 5000);
@@ -192,8 +228,23 @@ export default function Home() {
         </button>
       );
     }
+
+    // If we are currently waiting for something, return a loading button
+    if (loading) {
+      return <button className={styles.button}>Loading...</button>;
+    }
+    // Render when the game has started
+    if (gameStarted) {
+      return (
+        <div>
+          <button className={styles.button} onClick={joinGame}>
+            Join Game 🚀
+          </button>
+        </div>
+      );
+    }
     // Start the game
-    if (isOwner) {
+    if (isOwner && !gameStarted) {
       return (
         <div>
           <input
@@ -222,10 +273,6 @@ export default function Home() {
         </div>
       );
     }
-    // If we are currently waiting for something, return a loading button
-    if (loading) {
-      return <button className={styles.button}>Loading...</button>;
-    }
   };
 
   return (
@@ -241,11 +288,12 @@ export default function Home() {
           <div className={styles.description}>
             Its a lottery game where a winner is chosen at random and wins the
             entire lottery pool
-            {logs.forEach((log) => {
-              return <div className={styles.description}>{log}</div>;
-            })}
+            {logs.map((log, index) => (
+              <div className={styles.description} key={index}>
+                {log}
+              </div>
+            ))}
           </div>
-          <div className={styles.description}></div>
           {renderButton()}
         </div>
         <div>

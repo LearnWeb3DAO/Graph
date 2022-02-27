@@ -23,12 +23,16 @@ export class GameEnded__Params {
     this._event = event;
   }
 
+  get gameId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
   get winner(): Address {
-    return this._event.parameters[0].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get requestId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
+    return this._event.parameters[2].value.toBytes();
   }
 }
 
@@ -45,12 +49,16 @@ export class GameStarted__Params {
     this._event = event;
   }
 
+  get gameId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
   get maxPlayers(): i32 {
-    return this._event.parameters[0].value.toI32();
+    return this._event.parameters[1].value.toI32();
   }
 
   get entryFee(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -72,6 +80,28 @@ export class OwnershipTransferred__Params {
   }
 
   get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class PlayerJoined extends ethereum.Event {
+  get params(): PlayerJoined__Params {
+    return new PlayerJoined__Params(this);
+  }
+}
+
+export class PlayerJoined__Params {
+  _event: PlayerJoined;
+
+  constructor(event: PlayerJoined) {
+    this._event = event;
+  }
+
+  get gameId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get player(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 }

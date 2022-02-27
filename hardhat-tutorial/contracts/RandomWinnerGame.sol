@@ -19,7 +19,7 @@ contract RandomWinnerGame is VRFConsumerBase, Ownable {
     //Max number of players in one game
     uint8 maxPlayers;
     // Variable to indicate if the game has started or not
-    bool gameStarted;
+    bool public gameStarted;
     // the fees for entering the game
     uint256 entryFee;
     // current game id

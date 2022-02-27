@@ -11,32 +11,31 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class GameStartedEntity extends Entity {
+export class Game extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("maxPlayers", Value.fromI32(0));
     this.set("entryFee", Value.fromBigInt(BigInt.zero()));
+    this.set("players", Value.fromBytesArray(new Array(0)));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save GameStartedEntity entity without an ID");
+    assert(id != null, "Cannot save Game entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save GameStartedEntity entity with non-string ID. " +
+        "Cannot save Game entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("GameStartedEntity", id.toString(), this);
+      store.set("Game", id.toString(), this);
     }
   }
 
-  static load(id: string): GameStartedEntity | null {
-    return changetype<GameStartedEntity | null>(
-      store.get("GameStartedEntity", id)
-    );
+  static load(id: string): Game | null {
+    return changetype<Game | null>(store.get("Game", id));
   }
 
   get id(): string {
@@ -65,58 +64,47 @@ export class GameStartedEntity extends Entity {
   set entryFee(value: BigInt) {
     this.set("entryFee", Value.fromBigInt(value));
   }
-}
 
-export class GameEndedEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("winner", Value.fromBytes(Bytes.empty()));
-    this.set("requestId", Value.fromBytes(Bytes.empty()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save GameEndedEntity entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save GameEndedEntity entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("GameEndedEntity", id.toString(), this);
+  get winner(): Bytes | null {
+    let value = this.get("winner");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
     }
   }
 
-  static load(id: string): GameEndedEntity | null {
-    return changetype<GameEndedEntity | null>(store.get("GameEndedEntity", id));
+  set winner(value: Bytes | null) {
+    if (!value) {
+      this.unset("winner");
+    } else {
+      this.set("winner", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get winner(): Bytes {
-    let value = this.get("winner");
-    return value!.toBytes();
-  }
-
-  set winner(value: Bytes) {
-    this.set("winner", Value.fromBytes(value));
-  }
-
-  get requestId(): Bytes {
+  get requestId(): Bytes | null {
     let value = this.get("requestId");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set requestId(value: Bytes) {
-    this.set("requestId", Value.fromBytes(value));
+  set requestId(value: Bytes | null) {
+    if (!value) {
+      this.unset("requestId");
+    } else {
+      this.set("requestId", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get players(): Array<Bytes> {
+    let value = this.get("players");
+    return value!.toBytesArray();
+  }
+
+  set players(value: Array<Bytes>) {
+    this.set("players", Value.fromBytesArray(value));
   }
 }
