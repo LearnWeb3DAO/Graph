@@ -5,6 +5,7 @@ export function FETCH_CREATED_GAME() {
             maxPlayers
             entryFee
             winner
+            players
         }
     }`;
 }

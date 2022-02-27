@@ -15,14 +15,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   // boolean to keep track of whether the current connected account is owner or not
   const [isOwner, setIsOwner] = useState(false);
-  // Game id is the unique identifier for a game
-  const [gameId, setGameID] = useState(0);
   // entryFee is the ether required to enter a game
   const [entryFee, setEntryFee] = useState(zero);
   // maxPlayers is the max number of players that can play the game
   const [maxPlayers, setMaxPlayers] = useState(0);
   // Checks if a game started or not
   const [gameStarted, setGameStarted] = useState(false);
+  // Players that joined the game
+  const [players, setPlayers] = useState([]);
+  // Winner of the game
+  const [winner, setWinner] = useState();
   // Keep a track of all the logs for a given game
   const [logs, setLogs] = useState([]);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
@@ -95,14 +97,18 @@ export default function Home() {
       );
       setLoading(true);
       // call the startGame function from the contract
-      await randomGameNFTContract.startGame(maxPlayers, entryFee);
+      const tx = await randomGameNFTContract.startGame(maxPlayers, entryFee);
+      await tx.wait();
+      setLoading(false);
     } catch (err) {
       console.error(err);
-    } finally {
       setLoading(false);
     }
   };
 
+  /**
+   * startGame: Is called by a player to join the game
+   */
   const joinGame = async () => {
     try {
       // Get the signer from web3Modal, which in our case is MetaMask
@@ -117,13 +123,13 @@ export default function Home() {
       );
       setLoading(true);
       // call the startGame function from the contract
-      await randomGameNFTContract.joinGame({
-        value: BigNumber.from(entryFee),
+      const tx = await randomGameNFTContract.joinGame({
+        value: entryFee,
       });
+      await tx.wait();
       setLoading(false);
     } catch (error) {
       console.error(error);
-    } finally {
       setLoading(false);
     }
   };
@@ -144,24 +150,40 @@ export default function Home() {
         abi,
         provider
       );
-      // call the owner function from the contract
+      // read the gameStarted boolean from the contract
       const _gameStarted = await randomGameNFTContract.gameStarted();
-      setGameStarted(_gameStarted);
+
+      const _gameArray = await subgraphQuery(FETCH_CREATED_GAME());
+      const _game = _gameArray.games[0];
+      let _logs = [];
       // Initialize the logs array and query the graph for current gameID
       if (_gameStarted) {
-        const _gameArray = await subgraphQuery(FETCH_CREATED_GAME());
-        const _game = _gameArray.games[0];
-        const _logs = [`Game has started with ID: ${_game.id}`];
-        setEntryFee(_game.entryFee);
+        _logs = [`Game has started with ID: ${_game.id}`];
+        if (_game.players && _game.players.length > 0) {
+          _logs.push(
+            `${_game.players.length} / ${_game.maxPlayers} already joined 👀 `
+          );
+          _game.players.forEach((player) => {
+            _logs.push(`${player} joined 🏃‍♂️`);
+          });
+        }
+        setEntryFee(BigNumber.from(_game.entryFee));
         setMaxPlayers(_game.maxPlayers);
-        setGameID(_game.id);
-        setLogs(_logs);
-        forceUpdate();
+      } else if (!gameStarted && _game.winner) {
+        _logs = [
+          `Last game has ended with ID: ${_game.id}`,
+          `Winner is: ${_game.winner} 🎉 `,
+          `Waiting for host to start new game....`,
+        ];
+
+        setWinner(_game.winner);
       }
+      setLogs(_logs);
+      setPlayers(_game.players);
+      setGameStarted(_gameStarted);
+      forceUpdate();
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -212,7 +234,7 @@ export default function Home() {
       checkIfGameStarted();
       setInterval(() => {
         checkIfGameStarted();
-      }, 5000);
+      }, 2000);
     }
   }, [walletConnected]);
 
@@ -235,6 +257,13 @@ export default function Home() {
     }
     // Render when the game has started
     if (gameStarted) {
+      if (players.length === maxPlayers) {
+        return (
+          <button className={styles.button} disabled>
+            Choosing winner...
+          </button>
+        );
+      }
       return (
         <div>
           <button className={styles.button} onClick={joinGame}>
@@ -248,22 +277,26 @@ export default function Home() {
       return (
         <div>
           <input
-            type="text"
+            type="number"
             className={styles.input}
             onChange={(e) => {
               // The user will enter the value in ether, we will need to convert
               // it to WEI using parseEther
-              setEntryFee(utils.parseEther(e.target.value));
+              setEntryFee(
+                e.target.value >= 0
+                  ? utils.parseEther(e.target.value.toString())
+                  : zero
+              );
             }}
-            placeholder="Entry Fee"
+            placeholder="Entry Fee (ETH)"
           />
           <input
-            type="text"
+            type="number"
             className={styles.input}
             onChange={(e) => {
               // The user will enter the value in ether, we will need to convert
               // it to WEI using parseEther
-              setEntryFee(Number(e.target.value));
+              setMaxPlayers(e.target.value ?? 0);
             }}
             placeholder="Max players"
           />
@@ -288,13 +321,14 @@ export default function Home() {
           <div className={styles.description}>
             Its a lottery game where a winner is chosen at random and wins the
             entire lottery pool
-            {logs.map((log, index) => (
-              <div className={styles.description} key={index}>
+          </div>
+          {renderButton()}
+          {logs &&
+            logs.map((log, index) => (
+              <div className={styles.log} key={index}>
                 {log}
               </div>
             ))}
-          </div>
-          {renderButton()}
         </div>
         <div>
           <img className={styles.image} src="./randomWinner.png" />

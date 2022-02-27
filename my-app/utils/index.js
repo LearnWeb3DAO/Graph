@@ -3,7 +3,7 @@ import axios from "axios";
 export async function subgraphQuery(query) {
   try {
     const SUBGRAPH_URL =
-      "https://api.thegraph.com/subgraphs/id/QmTrvy6B4M9R1qoboUPyjvcNosNcJ3E4aY3ZWGXc9hrQdR";
+      "https://api.thegraph.com/subgraphs/name/sneh1999/learnweb3";
     const response = await axios.post(SUBGRAPH_URL, {
       query,
     });

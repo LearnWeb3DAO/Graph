@@ -41,6 +41,12 @@
   font-size: 1.2rem;
 }
 
+.log {
+  line-height: 1rem;
+  margin: 1rem 1rem;
+  font-size: 1rem;
+}
+
 .button {
   border-radius: 4px;
   background-color: blue;
