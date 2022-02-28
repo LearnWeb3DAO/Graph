@@ -257,6 +257,7 @@ export default function Home() {
     }
     // Render when the game has started
     if (gameStarted) {
+      // If the maxPlayer has been reached, dont allow more players to join the game
       if (players.length === maxPlayers) {
         return (
           <button className={styles.button} disabled>
