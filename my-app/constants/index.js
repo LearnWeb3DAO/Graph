@@ -1,5 +1,5 @@
 export const RANDOM_GAME_NFT_CONTRACT_ADDRESS =
-  "0x5d36E63ccD1137D48e81d35c4DA0B523B6E46D59";
+  "0xc2b23d73c93e6507201102b9ebea998f89f1f890";
 
 export const abi = [
   {
