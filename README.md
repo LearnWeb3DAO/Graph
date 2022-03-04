@@ -445,7 +445,7 @@ yarn deploy
 
 - Replace the example query with our query and click on the purple play button
 
-  ![](https://i.imgur.com/2x3ZTuv.png)
+  ![](https://i.imgur.com/vwkDrqT.png)
 
 - You can see some data coming up for my graph 👀 and the id of the game is 4
 
