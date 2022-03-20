@@ -12,7 +12,7 @@ Lets goo 🎉
 - Please install yarn from [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) If your computer doesnt have yarn already installed
 - Please watch this 40 minute tutorial on [GraphQL](https://www.youtube.com/watch?v=ZQL7tL2S0oQ)
 - If you dont know what axios is, Watch this short [tutorial](https://www.youtube.com/watch?v=6LyagkoRWYA)
-- You have completed the [Chainlink VRF tutorial](https://github.com/LearnWeb3DAO/Chainlink-VRFs)
+- You should have completed the [Chainlink VRF tutorial](https://github.com/LearnWeb3DAO/Chainlink-VRFs)
 
 ## What is the graph?
 
