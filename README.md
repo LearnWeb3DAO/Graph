@@ -145,7 +145,7 @@ type Game @entity {
 }
 ```
 
-- Here`ID` is the unique indetifier for a game and will be equivalent to the `gameId` variable we have in our contract.
+- Here`ID` is the unique identifier for a game and will be equivalent to the `gameId` variable we have in our contract.
 - `maxPlayers` will keep track of how many max players are allowed in this game.
 - `entryFee` is the fees to enter into the game and it is a BigInt because we have `entryFee` as a `uint256` in our contract which is a BigNumber
 - `winner` is the address of the winner in the game and is defined as Bytes because address is a hexadecimal string
