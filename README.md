@@ -6,7 +6,7 @@ We will learn how to use [The Graph](https://thegraph.com/en/) to index our even
 
 Lets goo 🎉
 
-## Prequisites
+## Prerequisites
 
 - We will be using yarn which is a package manager just like npm.
 - Please install yarn from [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) If your computer doesnt have yarn already installed
@@ -245,13 +245,13 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
   - If an entity with the given `id` doesnt exist return from the function and dont do anything
   - If it exists, set the winner and the requestId from the event into our Game Object(Note `GameEnded` event has the winner and requestId)
   - Then save this updated Game Object back to the `Graph's DB`
-  - For each game there will be a unique `Game` object which will have an unique `gameId`
+  - For each game there will be a unique `Game` object which will have a unique `gameId`
 
 - Now lets see what's happening in the `handlePlayerJoined`
 
   - It loads a `Game` object from `Graph's` db which has an ID equal to the `gameId` that is present in the event that Graph detected
   - If an entity with the given `id` doesnt exist, return from the function and dont do anything
-  - To actually update the player'sarray, we need to reassign the property on the entity that contains the array (i.e. players) similar to how we assign values to other properties on the entity (e.g. maxPlayers). Therefore, we need to create a temporary array which contains all of the existing entity.players elements, push to that, and reassign entity.players to be equal to the new array.
+  - To actually update the player's array, we need to reassign the property on the entity that contains the array (i.e. players) similar to how we assign values to other properties on the entity (e.g. maxPlayers). Therefore, we need to create a temporary array which contains all of the existing entity.players elements, push to that, and reassign entity.players to be equal to the new array.
   - Then save this updated Game Object back to the `Graph's DB`
 
 - Now lets see what's happening in the `handleGameStarted`
@@ -283,7 +283,7 @@ yarn deploy
          - abi.json
   ```
 
-- To create this `next-app`, in the terminal point to NFT-Collection folder and type
+- To create this `next-app`, in the terminal point to RandomWinnerGame folder and type
 
   ```bash
       npx create-next-app@latest
@@ -840,7 +840,7 @@ yarn deploy
 - Now create a new folder under the my-app folder and name it `constants`.
 - In the constants folder create a file, `index.js` and paste the following code.
 
-  - Replace `"address of your RandomWinnerGame contract"` with the address of the CryptoDevs contract that you deployed and saved to your notepad.
+  - Replace `"address of your RandomWinnerGame contract"` with the address of the RandomWinnerGame contract that you deployed and saved to your notepad.
   - Replace `---your abi---` with the abi of your RandomWinnerGame Contract. To get the abi for your contract, go to your `hardhat-tutorial/artifacts/contracts/RandomWinnerGame.sol` folder and from your `RandomWinnerGame.json` file get the array marked under the `"abi"` key.
 
   ```javascript
