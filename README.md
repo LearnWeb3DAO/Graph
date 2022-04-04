@@ -72,7 +72,10 @@ Lets goo 🎉
   ```bash
   yarn global add @graphprotocol/graph-cli
   ```
-
+- if you are using Windows Operating System. We recommend you to execute this command in your terminal pointing to `RandomWinnerGame` folder:
+  ```bash
+  npm install -g @graphprotocol/graph-cli
+  ```
 - Then execute this command but replace your github username with`GITHUB_USERNAME`
 
   ```bash
@@ -90,6 +93,9 @@ Lets goo 🎉
 - Next execute the following commmand:
 
   - Select the hosted-service option
+ 
+  ![](https://user-images.githubusercontent.com/60979345/161535958-8a862128-a585-49f2-beb2-b325149ccb92.png)
+  
   - For the deploy key, go to [The Graph's Hosted Service](https://thegraph.com/hosted-service/), click on `My Dashboard`, copy the `Access Token` and paste it for the `Deploy Key`
 
     ```bash
