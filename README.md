@@ -169,7 +169,7 @@ yarn codegen
 ```
 
 - After this `The Graph` would have created most of the code for you expect of the mappings.
-- If you look at `mapping.ts`, graph would have created for you some functions each pointing to one of the events that you created in your contract.
+- If you look at `mapping.ts` in `src`, graph would have created for you some functions each pointing to one of the events that you created in your contract.
 - These functions get called everytime the Graph finds an event relating to these functions.
 - We will add some code to these functions so that we can store the data when an event comes in.
 
