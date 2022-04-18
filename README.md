@@ -9,7 +9,7 @@ Lets goo 🎉
 ## Prerequisites
 
 - We will be using yarn which is a package manager just like npm.
-- Please install yarn from [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) If your computer doesnt have yarn already installed
+- Please install yarn from [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) If your computer doesn't have yarn already installed
 - Please watch this 40 minute tutorial on [GraphQL](https://www.youtube.com/watch?v=ZQL7tL2S0oQ)
 - If you dont know what axios is, Watch this short [tutorial](https://www.youtube.com/watch?v=6LyagkoRWYA)
 - You should have completed the [Chainlink VRF tutorial](https://github.com/LearnWeb3DAO/Chainlink-VRFs)
@@ -72,7 +72,10 @@ Lets goo 🎉
   ```bash
   yarn global add @graphprotocol/graph-cli
   ```
-
+- if you are using Windows Operating System. We recommend you to execute this command in your terminal pointing to `RandomWinnerGame` folder:
+  ```bash
+  npm install -g @graphprotocol/graph-cli
+  ```
 - Then execute this command but replace your github username with`GITHUB_USERNAME`
 
   ```bash
@@ -90,6 +93,9 @@ Lets goo 🎉
 - Next execute the following commmand:
 
   - Select the hosted-service option
+ 
+  ![](https://user-images.githubusercontent.com/60979345/161535958-8a862128-a585-49f2-beb2-b325149ccb92.png)
+  
   - For the deploy key, go to [The Graph's Hosted Service](https://thegraph.com/hosted-service/), click on `My Dashboard`, copy the `Access Token` and paste it for the `Deploy Key`
 
     ```bash
@@ -117,7 +123,7 @@ Now comes the fun part where we will modify the default code provided to us by T
 
 - Open up you `subgraph.yaml` inside the `graph` folder and add a `startBlock` to the yaml file after the `abi: RamdomWinnerGame` line, to get the startBlock you will need to go to [Mumbai PolygonScan](https://mumbai.polygonscan.com/) and search up your contract address, after that you will need to copy the block number of the block in which your contract was deployed
 
-- The start block doesnt come with the default settings but because we know that we only need to track the events from the block the contract was deployed, we will not need to sync the entire blockchain but only the part after the contract was deployed for tracking the events
+- The start block doesn't come with the default settings but because we know that we only need to track the events from the block the contract was deployed, we will not need to sync the entire blockchain but only the part after the contract was deployed for tracking the events
 
   ![](https://i.imgur.com/HVQ24Un.png)
 
@@ -162,7 +168,7 @@ Now its time to query this data 🎉
 
 Graph has an amazing functionality that given the `Entity` it can auto generate large chunk of code for you!!!
 
-Isnt that amazing? Lets use that functionality. In your terminal pointing to the graph directory execute this command
+Isn't that amazing? Lets use that functionality. In your terminal pointing to the graph directory execute this command
 
 ```bash
 yarn codegen
@@ -242,7 +248,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
   - it takes in the `GameEnded` event and expects `void` to be returned which means nothing gets returned from the function
   - It loads a `Game` object from `Graph's` db which has an ID equal to the `gameId` that is present in the event that Graph detected
-  - If an entity with the given `id` doesnt exist return from the function and dont do anything
+  - If an entity with the given `id` doesn't exist return from the function and dont do anything
   - If it exists, set the winner and the requestId from the event into our Game Object(Note `GameEnded` event has the winner and requestId)
   - Then save this updated Game Object back to the `Graph's DB`
   - For each game there will be a unique `Game` object which will have a unique `gameId`
@@ -250,13 +256,13 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 - Now lets see what's happening in the `handlePlayerJoined`
 
   - It loads a `Game` object from `Graph's` db which has an ID equal to the `gameId` that is present in the event that Graph detected
-  - If an entity with the given `id` doesnt exist, return from the function and dont do anything
+  - If an entity with the given `id` doesn't exist, return from the function and dont do anything
   - To actually update the player's array, we need to reassign the property on the entity that contains the array (i.e. players) similar to how we assign values to other properties on the entity (e.g. maxPlayers). Therefore, we need to create a temporary array which contains all of the existing entity.players elements, push to that, and reassign entity.players to be equal to the new array.
   - Then save this updated Game Object back to the `Graph's DB`
 
 - Now lets see what's happening in the `handleGameStarted`
   - It loads a `Game` object from `Graph's` db which has an ID equal to the `gameId` that is present in the event that Graph detected
-  - If an entity like that doesnt exist create a new one, also initialize the players array
+  - If an entity like that doesn't exist create a new one, also initialize the players array
   - Then set the maxPlayer and the entryFee from the event into our Game Object
   - Save this updated Game Object back to the `Graph's DB`
 
