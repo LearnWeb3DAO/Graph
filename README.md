@@ -72,11 +72,6 @@ Lets goo 🎉
   ```bash
   npm install -g @graphprotocol/graph-cli
   ```
-- Then execute this command but replace your github username with`GITHUB_USERNAME`
-
-  ```bash
-  graph init --product hosted-service GITHUB_USERNAME/Learnweb3
-  ```
 
 - After that execute this command but replace `GITHUB_USERNAME` with your Github username and `YOUR_RANDOM_WINNER_GAME_CONTRACT_ADDRESS` with the address of the RandomWinnerGame contract that you deployed in your Chainlink VRF tutorial. Press enter for all the questions after that :)
 
