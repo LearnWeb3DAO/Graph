@@ -2,39 +2,24 @@
 
 ![](https://i.imgur.com/t6l6hfP.png)
 
-We will learn how to use [The Graph](https://thegraph.com/en/) to index our events and query them.
-
-Lets goo 🎉
+[The Graph](https://thegraph.com/) is a decentralized query protocol and indexing service for the blockchain. It allows developers to easily track events being emitted from smart contracts on various networks, and write custom data transformation scripts, which are run in real time. The data is also made available through a simple GraphQL API which developers can then use to display things on their frontends.
 
 ## Prerequisites
-
 - We will be using yarn which is a package manager just like npm.
 - Please install yarn from [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) If your computer doesn't have yarn already installed
 - Please watch this 40 minute tutorial on [GraphQL](https://www.youtube.com/watch?v=ZQL7tL2S0oQ)
 - If you dont know what axios is, Watch this short [tutorial](https://www.youtube.com/watch?v=6LyagkoRWYA)
 - You should have completed the [Chainlink VRF tutorial](https://github.com/LearnWeb3DAO/Chainlink-VRFs)
 
-## What is the graph?
-
-- The Graph is used to query blockchain data without using centralized providers.
-- They help you to index the events emitted by your contract and query them.
-- Anyone can build open api's on the graph which are called **subgraphs**.
-- To query the data, graph asks the developer to use a subset of [GraphQL](https://thegraph.com/docs/en/developer/graphql-api/)
-
-![](https://i.imgur.com/KBAGfNy.png)
-
-(Referenced From The Graph’s website)
-
-## How does Graph work?
+## How it Works
 
 ![](https://i.imgur.com/IOIoroJ.png)
 
-- A dApp sends a transaction and some data gets stored in the smart contract.
-- This smart contract then emits one or more events.
-- Graph's node keeps scanning Ethereum for new blocks and the data for your subgraph that these blocks may contain.
-- Graph node on finding events for your subgraph runs the mapping handlers that we provide. The mapping is a WASM(Web assembly) modules that creates or updates data `entities` on the Graph Nodes in response to the event.
-- Think of these data `entities` as a structure for letting the graph know how we want our data to be stored.
-- Now that the Graph has stored the data in its node's in the form of `entities` we defined, we can query the Graph's node for this data using the [GraphQL Endpoint](https://graphql.org/learn/)
+1. A dApp sends a transaction and some data gets stored in the smart contract.
+2/ This smart contract then emits one or more events.
+3. Graph's node keeps scanning Ethereum for new blocks and the data for your subgraph that these blocks may contain.
+3. If the node finds an event you were looking for and defined in your subgraph, it runs the data transformation scripts (mappings) you defined. The mapping is a WASM (Web assembly) module that creates or updates data `Entities` on the Graph Nodes in response to the event.
+4. We can query the Graph's node for this data using the [GraphQL Endpoint](https://graphql.org/learn/)
 
 (Referenced From The Graph’s website)
 
@@ -70,7 +55,7 @@ Lets goo 🎉
 - In your terminal execute this command pointing to `RandomWinnerGame` folder:
 
   ```bash
-  npm install -g @graphprotocol/graph-cli
+  yarn global add @graphprotocol/graph-cli
   ```
 
 - After that execute this command but replace `GITHUB_USERNAME` with your Github username and `YOUR_RANDOM_WINNER_GAME_CONTRACT_ADDRESS` with the address of the RandomWinnerGame contract that you deployed in your Chainlink VRF tutorial. Press enter for all the questions after that :)
@@ -80,20 +65,14 @@ Lets goo 🎉
   ```
 
   ![](https://i.imgur.com/Y5NTkGD.png)
-
-- Next execute the following commmand:
-
-  - Select the hosted-service option
- 
-  ![](https://user-images.githubusercontent.com/60979345/161535958-8a862128-a585-49f2-beb2-b325149ccb92.png)
   
-  - For the deploy key, go to [The Graph's Hosted Service](https://thegraph.com/hosted-service/), click on `My Dashboard`, copy the `Access Token` and paste it for the `Deploy Key`
+- For the deploy key, go to [The Graph's Hosted Service](https://thegraph.com/hosted-service/), click on `My Dashboard`, copy the `Access Token` and paste it for the `Deploy Key`
 
     ```bash
        graph auth
     ```
 
-    ![](https://i.imgur.com/CkFmiv1.png)
+  ![](https://i.imgur.com/CkFmiv1.png)
 
 - Now the last two commands to execute are:
 
