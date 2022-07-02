@@ -70,10 +70,6 @@ Lets goo 🎉
 - In your terminal execute this command pointing to `RandomWinnerGame` folder:
 
   ```bash
-  yarn global add @graphprotocol/graph-cli
-  ```
-- if you are using Windows Operating System. We recommend you to execute this command in your terminal pointing to `RandomWinnerGame` folder:
-  ```bash
   npm install -g @graphprotocol/graph-cli
   ```
 - Then execute this command but replace your github username with`GITHUB_USERNAME`
@@ -82,7 +78,7 @@ Lets goo 🎉
   graph init --product hosted-service GITHUB_USERNAME/Learnweb3
   ```
 
-- After that execute this command but replace your github username with`GITHUB_USERNAME` and `YOUR_RANDOM_WINNER_GAME_CONTRACT_ADDRESS` with the address of the RandomWinnerGame contract that you deployed in your Chainlink VRF tutorial. Press enter for all the questions after that :)
+- After that execute this command but replace `GITHUB_USERNAME` with your Github username and `YOUR_RANDOM_WINNER_GAME_CONTRACT_ADDRESS` with the address of the RandomWinnerGame contract that you deployed in your Chainlink VRF tutorial. Press enter for all the questions after that :)
 
   ```bash
   graph init --contract-name RandomWinnerGame --product hosted-service GITHUB_USERNAME/Learnweb3  --from-contract YOUR_RANDOM_WINNER_GAME_CONTRACT_ADDRESS  --abi ./abi.json --network mumbai graph
