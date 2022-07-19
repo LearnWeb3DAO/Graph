@@ -556,7 +556,6 @@ yarn deploy
     const startGame = async () => {
       try {
         // Get the signer from web3Modal, which in our case is MetaMask
-        // No need for the Signer here, as we are only reading state from the blockchain
         const signer = await getProviderOrSigner(true);
         // We connect to the Contract using a signer because we want the owner to
         // sign the transaction
@@ -582,7 +581,6 @@ yarn deploy
     const joinGame = async () => {
       try {
         // Get the signer from web3Modal, which in our case is MetaMask
-        // No need for the Signer here, as we are only reading state from the blockchain
         const signer = await getProviderOrSigner(true);
         // We connect to the Contract using a signer because we want the owner to
         // sign the transaction
