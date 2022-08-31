@@ -91,7 +91,7 @@ Now comes the fun part where we will modify the default code provided to us by T
 
 **Lets get started**
 
-- Open up you `subgraph.yaml` inside the `graph` folder and add a `startBlock` to the yaml file after the `abi: RamdomWinnerGame` line, to get the startBlock you will need to go to [Mumbai PolygonScan](https://mumbai.polygonscan.com/) and search up your contract address, after that you will need to copy the block number of the block in which your contract was deployed
+- Open up you `subgraph.yaml` inside the `graph` folder and add a `startBlock` to the yaml file after the `abi: RandomWinnerGame` line, to get the startBlock you will need to go to [Mumbai PolygonScan](https://mumbai.polygonscan.com/) and search up your contract address, after that you will need to copy the block number of the block in which your contract was deployed
 
 - The start block doesn't come with the default settings but because we know that we only need to track the events from the block the contract was deployed, we will not need to sync the entire blockchain but only the part after the contract was deployed for tracking the events
 
@@ -108,7 +108,7 @@ Your final file should look something like [this](https://github.com/LearnWeb3DA
 
 - Okay now its time to create some `Entities`. `Entities` are objects which define the structure for how your data will be stored on `The Graph's nodes`. If you want to read more about them, click on this [link](https://thegraph.com/docs/en/developer/create-subgraph-hosted/#defining-entities)
 
-We will need an `Entity` which can cover all the variables we have in our events so that we can keep track of all of them. Open up for `schema.graphql` file and replace the already existing lines of code with the following lines of code:
+We will need an `Entity` which can cover all the variables we have in our events so that we can keep track of all of them. Open up our `schema.graphql` file and replace the already existing lines of code with the following lines of code:
 
 ```graphql
 type Game @entity {
@@ -385,7 +385,7 @@ yarn deploy
   }
   ```
 
-- As you can see we created a `GraphQL` query where we said we want a `game` object where data is ordered by Id(which is the gameId) in decending order and we want the first game from this ordered data
+- As you can see we created a `GraphQL` query where we said we want a `game` object where data is ordered by Id(which is the gameId) in descending order and we want the first game from this ordered data
 - Lets simplify this with an example: Suppose you have three game objects stored inside the `The Graph's` node.
 
   ```json
@@ -415,7 +415,7 @@ yarn deploy
       }
   ```
 
-- Now you want the latest game every single time. To get the latest game, you will first have to order them by Id and then put this data in decending order so that gameId 4 can come at the top(It will be the current game) and then we say `first:1` because we only want the gameId 4 object, we dont care about the old games.
+- Now you want the latest game every single time. To get the latest game, you will first have to order them by Id and then put this data in descending order so that gameId 4 can come at the top(It will be the current game) and then we say `first:1` because we only want the gameId 4 object, we dont care about the old games.
 
 - You can actually see this query working on the graph's hosted service. Lets try to do that:
 - I have already deployed a graph, lets look at my graph and use the query to query it, Go to [this link](https://thegraph.com/hosted-service/subgraph/sneh1999/learnweb3)
