@@ -6,18 +6,13 @@ export const abi = [
     inputs: [
       {
         internalType: "address",
-        name: "vrfCoordinator",
+        name: "vrfV2Wrapper",
         type: "address",
       },
       {
         internalType: "address",
         name: "linkToken",
         type: "address",
-      },
-      {
-        internalType: "bytes32",
-        name: "vrfKeyHash",
-        type: "bytes32",
       },
       {
         internalType: "uint256",
@@ -45,9 +40,9 @@ export const abi = [
       },
       {
         indexed: false,
-        internalType: "bytes32",
+        internalType: "uint256",
         name: "requestId",
-        type: "bytes32",
+        type: "uint256",
       },
     ],
     name: "GameEnded",
@@ -135,6 +130,19 @@ export const abi = [
   },
   {
     inputs: [],
+    name: "gameId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "gameStarted",
     outputs: [
       {
@@ -148,35 +156,9 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "getRandomWinner",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "requestId",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "joinGame",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "keyHash",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -214,17 +196,17 @@ export const abi = [
   {
     inputs: [
       {
-        internalType: "bytes32",
-        name: "requestId",
-        type: "bytes32",
-      },
-      {
         internalType: "uint256",
-        name: "randomness",
+        name: "_requestId",
         type: "uint256",
       },
+      {
+        internalType: "uint256[]",
+        name: "_randomWords",
+        type: "uint256[]",
+      },
     ],
-    name: "rawFulfillRandomness",
+    name: "rawFulfillRandomWords",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
