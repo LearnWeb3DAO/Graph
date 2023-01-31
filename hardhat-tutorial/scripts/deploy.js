@@ -1,7 +1,7 @@
 const { ethers } = require("hardhat");
 require("dotenv").config({ path: ".env" });
-require("@nomiclabs/hardhat-etherscan");
-const { FEE, VRF_COORDINATOR, LINK_TOKEN, KEY_HASH } = require("../constants");
+//require("@nomiclabs/hardhat-etherscan");
+const { FEE, VRF_WRAPPER, LINK_TOKEN } = require("../constants");
 
 async function main() {
   /*
@@ -11,9 +11,8 @@ async function main() {
   const randomWinnerGame = await ethers.getContractFactory("RandomWinnerGame");
   // deploy the contract
   const deployedRandomWinnerGameContract = await randomWinnerGame.deploy(
-    VRF_COORDINATOR,
+    VRF_WRAPPER,
     LINK_TOKEN,
-    KEY_HASH,
     FEE
   );
 
@@ -32,7 +31,7 @@ async function main() {
   // Verify the contract after deploying
   await hre.run("verify:verify", {
     address: deployedRandomWinnerGameContract.address,
-    constructorArguments: [VRF_COORDINATOR, LINK_TOKEN, KEY_HASH, FEE],
+    constructorArguments: [VRF_WRAPPER, LINK_TOKEN, FEE],
   });
 }
 
